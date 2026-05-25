@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Liste des équipes</h2>
+
+  <div class="task-list">
+    {% for team in teams %}
+      <div class="task-item">
+        <div>
+          <span class="task-title">
+            {% if user in team.members.all or team.created_by == user %}
+              ⭐
+            {% endif %}
+            <a href="{% url 'team_profile' team.id %}">{{ team.name }}</a>
+          </span>
+          <div style="font-size: 0.85rem; color: #666;">
+            Créée par : 
+            {% if team.created_by %}
+              <a href="{% url 'user_profile' team.created_by.id %}">{{ team.created_by.name }}</a>
+            {% else %}
+              Inconnu
+            {% endif %}
+            <br>
+            Membres : {{ team.members.count }} membre{% if team.members.count > 1 %}s{% endif %}
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>Aucune équipe disponible.</p>
+    {% endfor %}
+  </div>
+
+  <div class="create-task-link multiple-buttons">
+    <a href="{% url 'task_list' %}" class="btn create-btn">Retour aux tâches</a>
+    <a href="{% url 'create_team' %}" class="btn create-btn">Créer une équipe</a>
+  </div>
+{% endblock %}

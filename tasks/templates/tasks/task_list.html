@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Liste des tâches</h2>
+  <div class="task-list">
+    {% for task in tasks %}
+      <div class="task-item">
+        <div>
+          <span class="task-title">
+            {% if task.created_by == user %}⭐ {% endif %}
+            {{ task.title }}
+          </span>
+          <div style="font-size: 0.85rem; color: #666;">
+            Créée par : {{ task.created_by.name }}
+          </div>
+        </div>
+        <div class="task-actions">
+          <a href="{% url 'edit_task' task.id %}" class="btn edit-btn">Modifier</a>
+          <form action="{% url 'delete_task' task.id %}" method="post" class="inline-form">
+            {% csrf_token %}
+            <button type="submit" class="btn delete-btn" onclick="return confirm('Voulez-vous vraiment supprimer cette tâche ?');">Supprimer</button>
+          </form>
+        </div>
+      </div>
+    {% empty %}
+      <p>Aucune tâche disponible.</p>
+    {% endfor %}
+  </div>
+
+  <div class="create-task-link multiple-buttons">
+    <a href="{% url 'create_task' %}" class="btn create-btn">Créer une tâche</a>
+    <a href="{% url 'team_list' %}" class="btn create-btn">Voir la liste des équipes</a>
+    <a href="{% url 'create_team' %}" class="btn create-btn">Créer une équipe</a>
+  </div>
+  
+{% endblock %}

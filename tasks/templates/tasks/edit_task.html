@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Modifier la tâche : {{ task.title }}</h2>
+
+  <p><strong>Créée par :</strong> 
+    <a href="{% url 'user_profile' task.created_by.id %}">{{ task.created_by.name }}</a>
+  </p>
+
+  {% if task.created_by == user %}
+    <p><em>Vous êtes le propriétaire de cette tâche.</em></p>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">Enregistrer</button>
+  </form>
+
+  <p><a href="{% url 'task_list' %}">← Retour à la liste des tâches</a></p>
+{% endblock %}

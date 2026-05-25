@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Équipe : {{ team.name }}</h2>
+
+  {% if is_member %}
+    <form method="post" action="{% url 'leave_team' team.id %}">
+      {% csrf_token %}
+      <button type="submit" class="btn delete-btn">Quitter l'équipe</button>
+    </form>
+  {% else %}
+    <form method="post" action="{% url 'join_team' team.id %}">
+      {% csrf_token %}
+      <button type="submit" class="btn create-btn">Rejoindre l'équipe</button>
+    </form>
+  {% endif %}
+
+  <h3>Membres</h3>
+  <div class="task-list">
+    {% if members %}
+      {% for member in members %}
+        <div class="task-item">
+          <div>
+            <span class="task-title">
+              Utilisateur : <a href="{% url 'user_profile' member.id %}">{{ member.name }}
+            </a>
+            </span>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>Aucun membre.</p>
+    {% endif %}
+  </div>
+
+  <h3>Tâches publiques assignées à cette équipe</h3>
+  <div class="task-list">
+    {% for task in tasks %}
+      <div class="task-item">
+        <div>
+          <span class="task-title">
+            {% if task.created_by == user %}⭐ {% endif %}
+            {{ task.title }}
+          </span>
+          <div style="font-size: 0.85rem; color: #666;">
+            Créée par : 
+            {% if task.created_by %}
+              <a href="{% url 'user_profile' task.created_by.id %}">{{ task.created_by.name }}</a><br>
+            {% else %}
+              Inconnu<br>
+            {% endif %}
+            Statut : {{ task.get_status_display }}
+          </div>
+        </div>
+        <div class="task-actions">
+          <a href="{% url 'edit_task' task.id %}" class="btn edit-btn">Voir</a>
+        </div>
+      </div>
+    {% empty %}
+      <p>Aucune tâche publique assignée.</p>
+    {% endfor %}
+  </div>
+
+  <div class="create-task-link multiple-buttons">
+    <a href="{% url 'task_list' %}" class="btn create-btn">← Retour aux tâches</a>
+    <a href="{% url 'team_list' %}" class="btn create-btn">Voir toutes les équipes</a>
+  </div>
+{% endblock %}

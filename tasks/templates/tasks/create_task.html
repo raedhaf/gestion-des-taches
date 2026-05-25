@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Créer une tâche</h2>
+
+  <p><strong>Vous serez automatiquement défini comme propriétaire de cette tâche.</strong></p>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Créer</button>
+  </form>
+  <a href="{% url 'task_list' %}">Retour</a>
+{% endblock %}

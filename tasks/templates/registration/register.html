@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h2>Créer un compte</h2>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      
+      {% if form.non_field_errors %}
+        <p class="error">{{ form.non_field_errors }}</p>
+      {% endif %}
+      
+      <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+      {{ form.email }}
+      {% if form.email.errors %}
+        <p class="error">{{ form.email.errors }}</p>
+      {% endif %}
+
+      <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+      {{ form.name }}
+      {% if form.name.errors %}
+        <p class="error">{{ form.name.errors }}</p>
+      {% endif %}
+
+      <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+      {{ form.password1 }}
+      {% if form.password1.errors %}
+        <p class="error">{{ form.password1.errors }}</p>
+      {% endif %}
+
+      <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+      {{ form.password2 }}
+      {% if form.password2.errors %}
+        <p class="error">{{ form.password2.errors }}</p>
+      {% endif %}
+
+      <label for="{{ form.team.id_for_label }}">{{ form.team.label }}</label>
+      {{ form.team }}
+      {% if form.team.errors %}
+        <p class="error">{{ form.team.errors }}</p>
+      {% endif %}
+
+      <label for="{{ form.new_team_name.id_for_label }}">{{ form.new_team_name.label }}</label>
+      {{ form.new_team_name }}
+      {% if form.new_team_name.errors %}
+        <p class="error">{{ form.new_team_name.errors }}</p>
+      {% endif %}
+
+      <button type="submit">S'inscrire</button>
+    </form>
+  </div>
+{% endblock %}
